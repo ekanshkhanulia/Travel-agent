@@ -1,108 +1,92 @@
 # AI Travel Agent 🌍✈️
 
-An intelligent travel planning assistant that helps you create personalized trip itineraries. The AI agent collects your travel preferences and generates comprehensive travel plans including flights, hotels, restaurants, museums, leisure activities, and shopping destinations.
+A full-stack AI travel planning app that combines a Gemini-powered chat agent, travel recommendation tools, and a React UI. It collects trip preferences, searches for options, and builds an itinerary while storing conversations and suggestions in SQLite.
 
 ## Features
 
-- **Smart Trip Planning**: AI-powered agent that asks relevant questions about your trip
-- **Intelligent Chatbot**: Powered by Google Gemini for natural conversation
-- **Information Extraction**: Gemini AI extracts crucial travel details from conversations
-- **Flight Booking**: Integration with Booking.com API for flight searches
-- **Hotel Reservations**: Find and book accommodations through Booking.com API
-- **Restaurant Recommendations**: Discover dining options via TripAdvisor API
-- **Museum & Attractions**: Explore cultural sites using TripAdvisor API
-- **Leisure & Shopping**: Find entertainment venues and shopping areas with Geoapify API
+- **Session-based auth**: Sign up, log in, and profile management
+- **AI chat**: Google Gemini-powered trip planning flow
+- **Flight + hotel search**: Booking.com (RapidAPI) integrations
+- **Food + museums**: TripAdvisor integrations
+- **Leisure + shops**: Geoapify wiring (currently mocked in agents)
+- **Map picker**: Google Maps location selection in the UI
+- **Itinerary storage**: Suggestions saved to SQLite and displayed in the UI
+
+## Tech Stack
+
+- **Backend**: Flask, SQLAlchemy, Flask-Session
+- **Frontend**: Vite + React + TypeScript + shadcn/ui
+- **AI**: Google Gemini (`google-generativeai`)
+- **Database**: SQLite (local file)
 
 ## Prerequisites
 
-Before running this application, ensure you have the following installed:
-
-- Python 3.8 or higher
-- Node.js 16 or higher
-- npm or yarn
+- Python 3.8+
+- Node.js 16+
+- npm (or yarn)
 
 ## Installation & Setup
 
-### Backend Setup
+### Backend
 
-1. Navigate to the backend directory:
 ```bash
 cd backend
-```
-
-2. Install Python dependencies:
-```bash
 pip install -r requirements.txt
-```
-
-3. Run the backend server:
-```bash
 python app.py
 ```
 
-The backend server should now be running on `http://localhost:5000`.
+Backend runs at `http://localhost:5001`.
 
-### Frontend Setup
+### Frontend
 
-1. Navigate to the frontend directory:
 ```bash
 cd frontend
-```
-
-2. Install Node.js dependencies:
-```bash
 npm install
-```
-
-3. Start the development server:
-```bash
 npm run dev
 ```
 
-The frontend application should now be accessible at `http://localhost:8080`.
+Frontend runs at `http://localhost:8080`.
 
-## Getting Started
+## Environment Variables
 
-1. Open your browser and navigate to `http://localhost:8080`
-2. **Sign Up**: Create a new account with your email and password
-3. **Log In**: Use your credentials to access the AI Travel Agent
-4. Start planning your trip by chatting with the AI agent!
+Create a `.env` file in `backend/` (or set system env vars):
 
-## How It Works
+```
+SECRET_KEY=your-secret-key
+DATABASE_URL=sqlite:///travel_agent.db
+GOOGLE_API_KEY=your_gemini_api_key
+BOOKING_API_HOST=booking-com15.p.rapidapi.com
+BOOKING_API_KEY=your_rapidapi_key
+TRIPADVISOR_API_HOST=tripadvisor16.p.rapidapi.com
+TRIPADVISOR_API_KEY=your_rapidapi_key
+GEOAPIFY_API_KEY=your_geoapify_key
+```
 
-The AI Travel Agent will guide you through the trip planning process by asking about:
+Frontend `.env` in `frontend/`:
 
-- **Number of travelers**: How many people are traveling?
-- **Travel dates**: When do you plan to travel?
-- **Destination**: Where would you like to go?
-- **Origin**: Where are you traveling from?
-- **Budget**: What is your budget for the trip?
-- **Preferences**: Additional preferences for your trip
+```
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
+```
 
-Based on your responses, the agent creates a comprehensive trip plan with:
-- Flight options
-- Hotel recommendations
-- Restaurant suggestions
-- Museums and cultural attractions
-- Leisure activities
-- Shopping destinations
+## Core API Routes (Backend)
 
-## API Integrations
+- `POST /api/auth/signup`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `GET /api/auth/user`
+- `GET /api/profile`
+- `PUT /api/profile`
+- `POST /api/conversations`
+- `POST /api/travel-chat`
+- `GET /api/suggestions/<conversation_id>`
+- `POST /api/select_suggestion/<conversation_id>`
+- `GET /api/suggestions/<conversation_id>/itinerary-summary`
 
-This project integrates with the following APIs:
+## Notes / Current Limitations
 
-- **Google Gemini API**: Powers the conversational AI chatbot and extracts crucial travel information
-- **Booking.com API**: Flights and hotels
-- **TripAdvisor API**: Restaurants and museums
-- **Geoapify API**: Leisure activities and shopping locations
-
-*Note: You may need to configure API keys in the backend configuration files.*
-
-## Current Limitations
-
-**Booking Restrictions**: Due to current API limitations, the application does not make actual reservations on behalf of users. The AI agent provides recommendations and information about flights, hotels, restaurants, and attractions, but users must complete bookings independently through the respective platforms.
-
-*Note: The system is designed to support automated reservations, and this functionality can be easily enabled once API permissions for booking are obtained.*
+- Booking actions return recommendations only; users must book externally.
+- Geoapify shop/leisure calls are currently mocked in `backend/agents/shop_agent.py` and `backend/agents/leisure_agent.py`.
+- Some RapidAPI keys are hardcoded in `backend/agents/booking_client.py` and `backend/agents/flight_client.py`; replace them with environment variables for production use.
 
 ---
 
