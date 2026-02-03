@@ -1,6 +1,6 @@
 # AI Travel Agent 🌍✈️
 
-A full-stack AI travel planning app that combines a Gemini-powered chat agent, travel recommendation tools, and a React UI. It collects trip preferences, searches for options, and builds an itinerary while storing conversations and suggestions in SQLite.
+We made this project as a team for the Prosus AI Hackathon. It is a full-stack AI travel planning app that combines a Gemini-powered chat agent, travel recommendation tools, and a React UI. It collects trip preferences, searches for options, and builds an itinerary while storing conversations and suggestions in SQLite.
 
 ## Features
 
